@@ -34,7 +34,6 @@ exports.postAddProduct = (req, res, next) => {
       validationErrors: []
     });
   }
-  console.log(image)
   const imageUrl = image.path;
 
   const errors = validationResult(req);
@@ -64,7 +63,6 @@ exports.postAddProduct = (req, res, next) => {
   product
     .save()
     .then(result => {
-      // console.log(result);
       console.log('Created Product');
       res.redirect('/admin/products');
     })
@@ -158,7 +156,6 @@ exports.getProducts = (req, res, next) => {
     // .select('title price -_id')
     // .populate('userId', 'name')
     .then(products => {
-      console.log(products);
       res.render('admin/products', {
         prods: products,
         pageTitle: 'Admin Products',

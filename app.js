@@ -48,33 +48,43 @@ const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const authRoutes = require('./routes/auth');
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'))
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
+app.use(multer({
+  storage: fileStorage,
+  fileFilter: fileFilter
+}).single('image'))
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
-app.use(session({ secret: 'my secrete ', resave: false, saveUninitialized: false, store: store }))
+app.use(session({
+  secret: 'my secrete ',
+  resave: false,
+  saveUninitialized: false,
+  store: store
+}))
 app.use(csrfProtection);
 app.use(flash());
 
 app.use((req, res, next) => {
-  res.locals.isAuthenticated = req.session.isLoggedIn;
-  res.locals.csrfToken = req.csrfToken();
-  next();
-}),
+    res.locals.isAuthenticated = req.session.isLoggedIn;
+    res.locals.csrfToken = req.csrfToken();
+    next();
+  }),
 
   app.use((req, res, next) => {
     if (!req.session.user) {
       return next();
     }
     User.findById(req.session.user._id).
-      then(user => {
-        req.user = user
-        next();
-      }).catch(err => {
-        next(new Error(err))
-      })
+    then(user => {
+      req.user = user
+      next();
+    }).catch(err => {
+      next(new Error(err))
+    })
   });
 
 app.use('/admin', adminRoutes);
@@ -90,8 +100,11 @@ app.use((error, req, res, next) => {
 })
 
 mongoose
-  .connect(MONGODB_URI)
+  .connect(MONGODB_URI, {
+    useNewUrlParser: true,
+  })
   .then(result => {
+    console.log("connected to db")
     app.listen(3000);
   })
   .catch(err => {

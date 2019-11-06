@@ -7,7 +7,7 @@
 3. Add following line in your .env file 
 
 ``` 
-**MONGODB_URI** = "mongodb connection string" 
+MONGODB_URI = "mongodb connection string" 
 ```
 4. Replace connection string with your own details 
 5. run following command in terminal from root directory
